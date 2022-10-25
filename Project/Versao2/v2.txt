@@ -1,0 +1,2 @@
+Na versão 2 do projeto final, iremos usar o cronometro implementado na versão 1 juntamente com a maquina de estados desenhada para o projeto. 
+Esta versão será bastante aproximada da final exeto otimizações de codigo que ainda não foram contempladas e a possibilidade de enviar o valor de split de volta para o computador através de porta serie
