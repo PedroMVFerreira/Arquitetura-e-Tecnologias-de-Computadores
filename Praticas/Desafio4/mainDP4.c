@@ -24,7 +24,8 @@ void toggle (void) __using (1);
 bancos de dados para praticarmos o seu uso e melhorar o nosso codigo*/
 
 /*Declaração de variaveis globais*/
-volatile unsigned int contFlagTF0; /*Variavel responsavel por contar o numero de transbordos da flag TF0*/
+volatile unsigned char contFlagTF0; /*Variavel responsavel por contar o numero de transbordos da flag TF0*/
+volatile int reload;
 
 /*Fim - declaração de variaveis globais*/
 
@@ -61,9 +62,9 @@ void config (void) __using (1)
 	/*Fim da configuração das interrupções*/
 	
 	/*Inicialização dos registos de paragem e de auto reload*/
-	int reload = -50000;
-	TL0 = reload; //8 bits menos significativos
-	TH0 = reload>>8; //shift de 8 posições para termos os 8 bits mais significativos devido ao registo ser de 8 bits e a nossa varável de 16
+	reload = -50000;
+	TL0 = reload; 
+	TH0 = reload >> 8; 
 	/*Fim da inicialização dos registos de paragem e de auto reload*/
 	
 	TR0 = 1; /*Ativação do timer 0, inicializando a contagem*/
@@ -77,8 +78,11 @@ void timer0_isr (void) __interrupt (1) __using (1)
 	numero de vezes que existiu transbordo e ira depois invocar a função que lidara com o valor registado nessa
 	variavel para que o codigo da ISR seja o mais curto possivel e assim não bloquearmos o programa por tempo 
 	desnecessario
-	A flag do timer 0 é limpa automaticamente por hardware*/
+	A flag do timer 0 é limpa automaticamente por hardware
+	Visto que estamos num modo sem auto reload sera necessario reload manual*/
 	contFlagTF0++;
+	TL0 = reload; 
+	TH0 = reload >> 8;
 	toggle();
 }
 /*Fim da rotina de atendimento à interrupção*/
