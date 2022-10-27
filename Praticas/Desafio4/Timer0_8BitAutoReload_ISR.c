@@ -95,3 +95,5 @@ void toggle (void) __using (1)
 }
 /*Fim da função responsavel por lidar com o valor da variavel 'contFlagTF0' e por fazer toggle ao pino 7 do 
 porto 2*/
+
+/*IHF0 -> Internal High Frequency Oscilator*/
