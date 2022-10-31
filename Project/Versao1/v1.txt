@@ -1,1 +1,0 @@
-Na primeira versão do projeto apenas implementamos um cronometro ininterrupto com contagem até 12 horas e que mostra o seu conteudo no display de 7 segmentos
