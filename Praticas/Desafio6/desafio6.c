@@ -1,7 +1,7 @@
 /*
 Autores: Pedro Vale Ferreira (a95699) | Davide Oliveira Peixoto (a93949)
 Data: 09 de novembro de 2022 
-VersÃ£o: 0.3
+VersÃ£o: 0.4
 Desafio 2
 Turno: PL2
 Docente: Rui Machado 
@@ -40,11 +40,11 @@ void main(void)
 	/*Fim da declaraÃ§Ã£o das variavies*/
 	
 	while(1){
-		if(RI0 = 1)
+		if(RI0 == 1)
 			receiveUART();
 		switch(state){
 			case DISPLAY:
-				P2 = digitsOnP2[index];
+				P2 = digitsOnP2[index & 0x0F];
 				if(P0_6 == 0){
 					while(P0_6 == 0);
 					state = INC;
