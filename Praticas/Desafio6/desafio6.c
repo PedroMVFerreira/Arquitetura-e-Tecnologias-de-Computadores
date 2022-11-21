@@ -1,11 +1,11 @@
-/*
-Autores: Pedro Vale Ferreira (a95699) | Davide Oliveira Peixoto (a93949)
-Data: 09 de novembro de 2022 
-VersÃ£o: 0.4
-Desafio 2
-Turno: PL2
-Docente: Rui Machado 
-__________________________________________________________________________________________________________________
+/*														    \
+Autores: Pedro Vale Ferreira (a95699) | Davide Oliveira Peixoto (a93949)                                        \ 
+Data: 09 de novembro de 2022 											    \
+VersÃ£o: 0.4													    \
+Desafio 2													    \
+Turno: PL2													    \
+Docente: Rui Machado 												    \
+________________________________________________________________________________________________________________\
 ImplementaÃ£o da maquina de estados referente ao exercicio e junção com comunicação UART
 */
 /*DefiniÃ§Ã£o dos estados*/
@@ -23,7 +23,7 @@ void generalConfigs();
 void timerConfigsForUART0();
 void portaSerieConfigs();
 void receiveUART();
-void sendUART(signed char x);
+void sendUART();
 /*Fim de prototipos*/
 
 #include <c8051f380.h>
@@ -40,11 +40,11 @@ void main(void)
 	/*Fim da declaraÃ§Ã£o das variavies*/
 	
 	while(1){
-		if(RI0 == 1)
-			receiveUART();
 		switch(state){
 			case DISPLAY:
 				P2 = digitsOnP2[index & 0x0F];
+				if(RI0 == 1)
+					receiveUART();
 				if(P0_6 == 0){
 					while(P0_6 == 0);
 					state = INC;
@@ -69,7 +69,7 @@ void main(void)
 				index--;
 					if(index < 0)/*Utilizou se o if e não a mascara por causa do envio do valor de indice*/
 						index = 15;
-				sendUART(index);
+				sendUART();
 				state = DISPLAY;
 			break;
 		}/*Fim do switch case*/
@@ -93,28 +93,27 @@ void timerConfigsForUART0()
 	CKCON |= 0x08; /*Equivalente a ter T1M  = 1*/
 	TH1 = 0x98; /*Valor de reload para 115200 (o valor de reload para 9600 é igual, logo poderemos comentar a linha
 	de codigo referente ao CKCON e obtemos um baud rate de 9600*/
-	TMOD |= 0x02; /*Modo 2 (8 bit com auto reload) obrigatorio no uso da UART0*/
+	TMOD |= 0x20; /*Modo 2 (8 bit com auto reload) obrigatorio no uso da UART0*/
 	TR1 = 1; /*Ativiação do timer 1*/
 }
 
 void portaSerieConfigs()
 {
-	TI0 = 1; /*Transmite interrupt flag*/
-	RI0 = 1; /*Recive interrupt flag*/
+	TI0 = 1; /*Transmite interrupt flag, colocada a 1 para assinalar que estamos prontos para um envio */
+	RI0 = 0; /*Recive interrupt flag*/
 	REN0 = 1; /*Ativa a receção (por defeito desativada)*/
 }
 
 void receiveUART()
 {
-	while(!RI0);/*Aguarda a receção de um byte*/
 	letter = SBUF0; /*Le o byte recebido no fim da comunicação guardado temporariamente no buffer da UART0*/
 	RI0 = 0; /*Limpa a flag de receção para uma nova receção*/ 
 }
 
-void sendUART(signed char x)
+void sendUART()
 {
 	/*Visto apenas enviarmos valores entre 0 e 15 um byte é mais do que suficiente para envio dos nossos dados*/
 	while(!TI0); /*Aguarada pelo envio anterior*/
 	TI0 = 0; /*Limpa a flag de envio*/
-	SBUF0 = x; /*Envio do valor de index*/
+	SBUF0 = index; /*Envio do valor de index*/
 }

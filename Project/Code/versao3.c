@@ -26,6 +26,7 @@ A divisão do codigo fonte em diferentes funções encontra-se a funcionar corre
 #define CONT_SEGS 1
 #define SPLIT 2
 #define RESET 3
+#define END_CONT 4
 /*Fim da definição dos estados*/
 
 /*Definição do tempo maximo de contagem do cronometro*/
@@ -67,17 +68,6 @@ void main(void)
 	
 	/*Ciclo infinito que nos permite correr o nosso programa no micro-controlador*/
 	while(1){
-		/*Caso o valor de contagem (valor guardado na variavel 'segs' seja igual ao definido com o valor maximo
-		de contagem ('MAXTIME') o programa ira enviar o seu valor de volta para o terminal e entrar no estado de
-		reset*/
-		if(segs == MAXTIME){
-			/*Envio da variavel 'segs' de volta para o terminal*/
-			state = RESET;
-		}
-		/*Fim do caso fim de contagem por tempo excedido*/
-		
-		/*Execução normal da contagem de tempo*/
-		else{
 			/*Implementação da maquina de estados pensada para o projeto utilizando um switch case*/
 			switch(state){
 				case IDLE:
@@ -118,6 +108,8 @@ void main(void)
 					if(P0_6 == 1 && P0_7 == 0)
 						state = SPLIT;
 					/*Fim de botão B pressionado*/
+					if(segs == MAXTIME)
+						state = END_CONT;
 				break;
 				
 				case SPLIT:
@@ -126,11 +118,15 @@ void main(void)
 					seja largado iremos automaticamente para o modo 'IDLE'*/
 					while(P0_7 == 0)
 						state = SPLIT;
-					state = IDLE;
+					state = CONT_SEGS;
 				break;
 				
 				case RESET:
 					reset();	/*Função responsavel pelo estado de 'reset'*/
+					state = IDLE;
+				break;
+				case END_CONT:
+					segs = 0;
 					state = IDLE;
 				break;
 			}
