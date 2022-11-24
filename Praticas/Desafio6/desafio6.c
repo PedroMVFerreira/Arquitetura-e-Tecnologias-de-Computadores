@@ -2,7 +2,7 @@
 Autores: Pedro Vale Ferreira (a95699) | Davide Oliveira Peixoto (a93949)                                        \ 
 Data: 09 de novembro de 2022 											    \
 VersÃ£o: 0.4													    \
-Desafio 2													    \
+Desafio 6													    \
 Turno: PL2													    \
 Docente: Rui Machado 												    \
 ________________________________________________________________________________________________________________\
