@@ -1,0 +1,20 @@
+Caros Alunos,
+
+O desafio para a próxima semana será idêntico ao desafio da semana anterior, mas recorrendo à UART1, em vez da UART0. 
+
+Assim, para o desafio da próxima semana terão de desenvolver uma aplicação que utilize a porta série para incrementar o valor de 0-F mostrado no display de 7-segmentos.
+
+Caso recebam a string  "inc", o valor a mostrar no display deve ser incrementado. Caso a string recebida seja "dec", o valor a mostrar no display deve ser decrementado.
+
+A aplicação deve ainda permitir que o valor mostrado no display seja incrementado e decrementado com recurso aos botões.
+
+Sempre que o valor do display for alterado, o valor atual deve ser enviado pela porta série.
+
+A receção e envio de caracteres era feito por pooling, esta semana, a receção e envio de caracteres pela porta série deve fazer uso da interrupção da UART1.
+
+O desafio deve ser entregue até às 23h50 de domingo, 27 de Novembro.
+
+
+Cumprimentos,
+
+Rui Machado
