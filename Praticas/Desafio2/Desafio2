@@ -1,0 +1,12 @@
+Caros alunos,
+
+O desafio prático para as aulas práticas da próxima semana requer a utilização dos dois butões e do display de 7 segmentos presentes nos vossos kit de desenvolvimento.
+
+O programa a desenvolver dever mostrar no display os números hexadecimais de 0-F. Um dos botões deve ser programado para incrementar o número do display, enquanto que o outro botão deve decrementar o número mostrado no display. Se o número mostrado for o F e o botão de incremento for premido, a sequência deve ser reiniciada e o número a mostrar deve ser o zero. Da mesma forma se o número mostrado for o 0 e o botão de decremento for premido, o número a mostrar deve ser o F.
+
+Devem entregar o trabalho até domingo, 9 de Outubro, às 23h59 através da blackboard (recorrendo ao link com as questões aulas práticas).
+
+
+Com os melhores cumprimentos,
+
+Rui Machado

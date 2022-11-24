@@ -1,0 +1,17 @@
+Caros Alunos,
+
+
+Para o desafio da próxima semana terão de desenvolver uma aplicação que utilize a porta série para incrementar o valor de 0-F mostrado no display de 7-segmentos.
+
+Caso o caracter "i" seja recebido, o valor a mostrar no display deve ser incrementado. Caso o caracter "d" seja recebido, o valor a mostrar no display deve ser decrementado.
+
+A aplicação deve ainda permitir que o valor mostrado no display seja incrementado e decrementado com recurso aos botões.
+
+Sempre que o valor do display for alterado, o valor atual deve ser enviado pela porta série.
+
+O desafio deve ser entregue até às 23h50 de domingo, 13 de Novembro.
+
+
+Cumprimentos,
+
+Rui Machado

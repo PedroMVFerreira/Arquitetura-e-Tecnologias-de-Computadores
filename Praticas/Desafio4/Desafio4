@@ -1,0 +1,16 @@
+Caros alunos,
+
+O desafio prático para as aulas práticas da próxima semana requer a utilização do timer 0 ou do timer 2 com interrupções.
+
+O programa a desenvolver dever fazer toggle ao ponto no display de 7-segmentos (P2_7) a cada segundo. Ou seja, no estado inicial o ponto começa desligado, após um segundo devem ligar o ponto, passado mais um segundo devem voltar a desligar o ponto e assim sucessivamente. 
+
+A utilização do timer 2 será valorizada.
+
+A função main deve conter apenas duas linhas de código. A primeira com uma invocação a uma função de config, responsável pela configuração do microcontrolador e a segunda com um while(1).
+
+Devem entregar o trabalho até domingo, 30 de Outubro, às 23h59 através da blackboard (recorrendo ao link com as questões aulas práticas).
+
+
+Com os melhores cumprimentos,
+
+Rui Machado
