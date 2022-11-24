@@ -13,7 +13,7 @@ Implementação da maquina de estados referente ao exercicio e junção com comu
 //Declarações de variaveis globais 
 volatile unsigned char TxDado;
 volatile unsigned char RxDado; 
-volatile unsigned char data; 
+volatile unsigned char dado; 
 
 //MACROS
 //SFR stands for special function register e p stands for position
@@ -22,11 +22,16 @@ volatile unsigned char data;
 #define TOOGLE(SFR, p) (SFR ^= 1 << p)
 #define IS_SET(SFR, p) (SFR & 1 << p)
 
+//Estados da maquina de estados
+#define DISPLAY 0
+#define INC 1
+#define DEC 2
+
 
 //Função de configuração
 void config()
 {
-	PCAOMD = 0x00;  	//Desativar o watchdog
+	PCA0MD = 0x00;  	//Desativar o watchdog
 	
 	//Crossbar configurations
 	XBR1 |= 0x40;		//Ativa o crossbar
@@ -34,18 +39,18 @@ void config()
 	P0SKIP |= 0x007;	//Re-route de TX1 e RX1 para os pinos P0_4 e P0_5 respetivamente
 	
 	//Baud rate generator (A UART1 utiliza um timer dedicado) 115200bps
-	SBRLL1 |= 0xF9;		//Byte menos significativo do valor de reload
-	SBRLH1 |= 0xFF;		//BYte mais significativo do valor de reload
-	SCON1 |= 0x10;			//Ativa a receção da UART1
-	SBCON1 |= 0x43;		//Byte menos significativo -> baud rate presecaler select definido para SYSCLK / 1 ||Byte mais significativo -> ativa o baud rate generator
+	SBRLL1 |= 0xF9;	//Byte menos significativo do valor de reload
+	SBRLH1 |= 0xFF;	//BYte mais significativo do valor de reload
+	SCON1 |= 0x10;		//Ativa a receção da UART1
+	SBCON1 |= 0x43;	//Byte menos significativo -> baud rate presecaler select definido para SYSCLK / 1 ||Byte mais significativo -> ativa o baud rate generator
 	
 	//Interrupções
-	IE |= 0x80;			//Ativa cada interrupção de acordo com as configurações individuais
-	EIE2 |= 0x02;			//Ativa as interrupções geradas pela UART1
+	IE |= 0x80;		//Ativa cada interrupção de acordo com as configurações individuais
+	EIE2 |= 0x02;		//Ativa as interrupções geradas pela UART1
 	
 	//Configuração de flags
-	CLEAR(SCON1, 0);		//RI1 = 0
-	SET(SCON1, 1);			//TI1 = 1
+	CLEAR(SCON1, 0);	//RI1 = 0
+	SET(SCON1, 1);		//TI1 = 1
 }
 
 void isr_UART1 (void) __interrupt (16)
@@ -91,7 +96,7 @@ void digitConfiguration(signed char x)
 		d1 = (unsigned) x;
 		enviaUART(d1 + 48);
 	}
-	else(
+	else{
 		d2 = x % 10;
 		x = x / 10;
 		d1 = x % 10;
@@ -117,14 +122,14 @@ void main (void)
 	/*Declaração e inicialização de variaveis*/
 	__code unsigned char digitsOnP2[] = {0xC0/*0*/, 0xF9/*1*/, 0xA4/*2*/, 0xB0/*3*/, 0x99/*4*/, 0x92/*5*/, 0x82/*6*/, 
 	0xF8/*7*/, 0x80/*8*/, 0x98/*9*/, 0x88/*A*/, 0x83/*b*/, 0xC6/*C*/, 0xA1/*d*/, 0x86/*E*/, 0x8E/*F*/};
-	index = 0;
-	unsigned char state = DISPLAY;
+	unsigned char state = DISPLAY, letter;
 	signed char index = 0;
 	/*Fim da declaraÃ§Ã£o das variavies*/
 	
 	while(1){
 		switch(state){
 			case DISPLAY:
+				letter = recebeUART();
 				P2 = digitsOnP2[index & 0x0F];
 				if(RI0 == 1)
 					recebeUART();
