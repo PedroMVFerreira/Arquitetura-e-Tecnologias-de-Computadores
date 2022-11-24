@@ -4,9 +4,12 @@
 #include <c8051f380.h>
 #include "macros.h"
 #include "configs.h"
+#include "states.h"
+#include "aux.h"
 
 //Variaveis globais
 unsigned int segs;
+unsigned char contFlagT2
 
 void main (void)
 {
@@ -16,13 +19,14 @@ void main (void)
 	unsigned char state;
 	
 	//Inicialização de variaveis globais e locais
-	segs = 0; 
+	globalInits();
 	state = IDLE;
 	
 	while(1){
 		//Implementação da maquina de estados
 		switch(state){
 			case IDLE:
+				idle();
 				if(P0_6 == 0){//Botão A pressionado
 					while(P0_6 == 0);
 					state = CONT;
@@ -34,6 +38,7 @@ void main (void)
 
 			break;
 			case CONT:
+				cont();
 				if(P0_6 == 0){//Botão A pressionado
 					while(P0_6 == 0);
 					state = IDLE;
@@ -44,13 +49,16 @@ void main (void)
 					state = END;
 			break;
 			case SPLIT:
+				split();
 				while(P0_7 == 0);
 				state = CONT;
 			break;
 			case RESET:
+				reset();
 				state = IDLE;
 			break;
 			case END:
+				end();
 				state = IDLE;
 			break;
 		}//Fim da maquina de estaoos
