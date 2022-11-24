@@ -36,7 +36,7 @@ void config()
 	//Crossbar configurations
 	XBR1 |= 0x40;		//Ativa o crossbar
 	XBR2 |= 0x01;		//Ativa a UART1 nos pinos do porto (TX1 em P0_0 e RX1 em P0_1)
-	P0SKIP |= 0x007;	//Re-route de TX1 e RX1 para os pinos P0_4 e P0_5 respetivamente
+	P0SKIP |= 0x0F;	//Re-route de TX1 e RX1 para os pinos P0_4 e P0_5 respetivamente
 	
 	//Baud rate generator (A UART1 utiliza um timer dedicado) 115200bps
 	SBRLL1 |= 0xF9;	//Byte menos significativo do valor de reload
