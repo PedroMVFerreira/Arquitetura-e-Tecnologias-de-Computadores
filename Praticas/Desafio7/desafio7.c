@@ -18,7 +18,7 @@ volatile unsigned char data;
 //Função de configuração 
 void config()
 {
-	PCAOMD = 0x00;  //Desativar o watchdog
+ 	PCAOMD = 0x00;  //Desativar o watchdog
 	XBR1 |= 0x40;	//Ativa o crossbar
 	XBR0 |= 0x01;	//Ativa a UART0 no croosbar
 	REN0 = 1; 	//Habilita a receção da UART
@@ -35,6 +35,10 @@ void config()
 	
 	//Push pull não faz diferença (deveremos apenas ativar para obtermos maior currente e por exemplo um led mais brilhante) 
 	P0MDOUT |= 0x10;
+	
+	//Configurações de flags
+	RI0 = 0;
+	TI0 = 1;
 }
 
 void isr_UART0 (void) __interrupt(4)
