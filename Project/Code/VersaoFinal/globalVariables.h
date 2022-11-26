@@ -1,5 +1,5 @@
 //Variaveis globais
-unsigned int passSplit;
-unsigned int splitValue;
-unsigned int segs;
-unsigned char contFlagT2;
+extern unsigned int passSplit;
+extern unsigned int splitValue;
+extern unsigned int segs;
+extern unsigned char contFlagT2;
