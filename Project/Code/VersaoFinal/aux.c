@@ -1,5 +1,6 @@
 //Header files
 #include <c8051f380.h>
+#include "globalVariables.h"
 
 void globalInits (void)
 {

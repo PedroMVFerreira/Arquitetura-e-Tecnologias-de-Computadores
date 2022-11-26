@@ -6,10 +6,8 @@
 #include "configs.h"
 #include "states.h"
 #include "aux.h"
-
-//Variaveis globais
-unsigned int segs;
-unsigned char contFlagT2
+#include "globalVariables.h"
+#include "timer2.h"
 
 void main (void)
 {
@@ -22,6 +20,8 @@ void main (void)
 	globalInits();
 	state = IDLE;
 	
+	//Inicialização da contagem 
+	timer2Start();
 	while(1){
 		//Implementação da maquina de estados
 		switch(state){

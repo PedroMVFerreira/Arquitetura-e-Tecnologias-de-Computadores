@@ -32,8 +32,14 @@ void timer2Configs (void)
 	int reload = -50000; //Faltam 50000 ciclos para o transbordo
 	CLKSEL |= 0x02;
 	TMR2RLL = reload;	//Valor de reload -> byte menos significativo
-	TMR2RLH = reload >> 8; //Valor de reload -> byte mais significativo 
+	TMR2RLH = SHIFTRIGTH(reload, 8); //Valor de reload -> byte mais significativo, os 8 bits mais significativos ocuparam a posição dos bit menos significativos  
 	
+}
+
+void flagsUART_configs (void)
+{
+	CLEAR(SCON1, 0); 	//RI1 = 0 -> receive
+	SET(SCON1, 1);		//TI1 = 1 -> transmite 
 }
 
 void configs (void)
@@ -41,6 +47,7 @@ void configs (void)
 	PCA0MD = 0x00; //Desativa o watchdog
 	portPinsConfigs();
 	UART1_configs();
+	flagsUART_configs();
 	timer2Configs();
 	interruptsConfig();
 }

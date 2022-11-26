@@ -17,3 +17,5 @@ SFR stands for special function register e p stands for position*/
 #define CLEAR(SFR, p) (SFR &= ~(1 << p))
 #define TOOGLE(SFR, p) (SFR ^= 1 << p)
 #define IS_SET(SFR, p) (SFR & 1 << p)
+#define SHIFTLEFT (SFR, p) (SFR << p)
+#define SHIFTRIGTH (SFR, p) (SFR >> p)

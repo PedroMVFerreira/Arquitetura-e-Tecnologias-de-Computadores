@@ -2,10 +2,7 @@
 
 //Header files
 #include <c8051f380.h>
-
-//Variaveis globais
-unsigned int passSplit;
-unsigned int splitValue;
+#include "globalVariables.h"
 
 void idle (void)
 {
