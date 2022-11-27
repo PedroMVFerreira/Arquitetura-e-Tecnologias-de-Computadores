@@ -16,7 +16,7 @@ volatile unsigned char RxDado;
 volatile unsigned char dado; 
 unsigned char string[10];
 unsigned char charReceived = 0;
-unsigned char receptionEnded;
+unsigned char receptionEnded = 0;
 
 //MACROS
 //SFR stands for special function register e p stands for position
@@ -67,7 +67,7 @@ void isr_UART1 (void) __interrupt (16)
 			charReceived++;
 		}
 		charReceived = 0;
-		recepetionEnded = 1;
+		receptionEnded = 1;
 	}
 	if(IS_SET(SCON1, 1)){
 		 CLEAR(SCON1, 1);//Limpeza da flag de envio
@@ -88,15 +88,12 @@ void enviaUART(unsigned char x)
 	SET(SCON1, 1);	//TI1 = 1 -> Chamada da ISR
 }
 
-void recebeUART(void)
-{
-	unsigned char charReceived = 0;
-	
 
 unsigned char stringValidation (void)
 {
 	//Declaração e inicialização de variaveis 
-	unsigned char index, resultado = 0;
+	unsigned int  resultado = 0;
+	unsigned char index;
 	if(charReceived != 3)
 		return ERROR; 
 	else{
@@ -160,7 +157,6 @@ void main (void)
 	while(1){
 		switch(state){
 			case DISPLAY:
-				letter = recebeUART();
 				P2 = digitsOnP2[index & 0x0F];
 				if(receptionEnded == 1)
 					result = stringValidation();
