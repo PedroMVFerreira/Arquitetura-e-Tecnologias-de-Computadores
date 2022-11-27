@@ -6,17 +6,17 @@ Desafio 7 - Resolução depois da aula										    \
 Turno: PL2													    \
 Docente: Rui Machado 												    \
 ________________________________________________________________________________________________________________\
-Implementação da maquina de estados referente ao exercicio e junção com comunicação UART1, utilizando interrupções lendo string*/
+Implementação da maquina de estados referente ao exercicio e junção com comunicação UART1, utilizando interrupções lendo apenas um caracter*/
 
 #include <c8051f380.h> 
 
 //Declarações de variaveis globais 
-volatile unsigned char readString[16];
-volatile unsigned char read_readPointer;	
-volatile unsigned char read_writePointer;
-volatile unsigned char writeString[16];
-volatile unsigned char write_readPointer;
-volatile unsigned char write_writePointer;
+volatile unsigned char TxDado;
+volatile unsigned char RxDado; 
+volatile unsigned char dado; 
+unsigned char string[10];
+unsigned char charReceived = 0;
+unsigned char receptionEnded;
 
 //MACROS
 //SFR stands for special function register e p stands for position
@@ -29,9 +29,8 @@ volatile unsigned char write_writePointer;
 #define DISPLAY 0
 #define INC 1
 #define DEC 2
+#define ERROR 3
 
-#define BUFSIZEMASK 0x0F
-#define LSB 0x07
 
 //Função de configuração
 void config()
@@ -62,21 +61,140 @@ void isr_UART1 (void) __interrupt (16)
 {
 	if(IS_SET(SCON1, 0)){//Acabou de receber, flag de receção RI1 ativa
 		CLEAR(SCON1, 0);//Limpa a flag de receção
-		if(readString[read_readPointer] != '\n'){
-			readString[read_readPointer] = SBUF1; //Recebe o byte
-			read_readPointer++;
+		RxDado = 1;
+		if(dado != '\n'){
+			string[charReceived] = dado;
+			charReceived++;
 		}
+		charReceived = 0;
+		recepetionEnded = 1;
 	}
 	if(IS_SET(SCON1, 1)){
 		 CLEAR(SCON1, 1);//Limpeza da flag de envio
-		 if(write_readPointer != write_writePointer){//Existe algo para enviar
-		 	SBUF1 = writeString[write_readPointer];//Envio
-		 	write_readPointer++;
+		 if(TxDado){//Existe algo para enviar
+		 	TxDado = 0;//A enviar
+		 	SBUF1 = dado;//Envio
 		 }
+		 else
+		 	TxDado = 1;
 	}
 }
 
-void enviaUART()
+void enviaUART(unsigned char x)
 {
-	while(());
+	while(!TxDado);
+	dado = (x);	//O 0 na tabela ascci corresponde a 0 dai incrementarmos 48 ao numero que queremos enviar, para enviarmos o seu codigo correspondente
+	TxDado = 1;
+	SET(SCON1, 1);	//TI1 = 1 -> Chamada da ISR
+}
+
+void recebeUART(void)
+{
+	unsigned char charReceived = 0;
+	
+
+unsigned char stringValidation (void)
+{
+	//Declaração e inicialização de variaveis 
+	unsigned char index, resultado = 0;
+	if(charReceived != 3)
+		return ERROR; 
+	else{
+		for(index = 0; index != 3; index++)
+			resultado += string[index];
+		if(resultado == 314)
+			return INC;
+		else if(resultado == 300)
+			return DEC;
+	}
+}
+
+void digitConfiguration(signed char x)
+{
+	unsigned char d1, d2; //d1 guardara o digito mais significativo ou digito unico e d2 o digito menos significativo
+	if(x <= 9){
+		d1 = (unsigned) x;
+		enviaUART(d1 + 48);
+	}
+	else{
+		d2 = x % 10;
+		x = x / 10;
+		d1 = x % 10;
+		enviaUART(d1 + 48);
+		enviaUART(d2 + 48);
+	}
+}
+
+void errorMessage()
+{
+	enviaUART('E');
+	enviaUART('R');
+	enviaUART('R');
+	enviaUART('O');
+	enviaUART('\r');
+	enviaUART('\n');
+}
+
+void valueMessage()
+{
+	enviaUART('V');
+	enviaUART('A');
+	enviaUART('L');
+	enviaUART('O');
+	enviaUART('R');
+	enviaUART(':');
+	enviaUART('\t');
+}
+
+void main (void)
+{
+	//Exatamente igual ao desafio da semana anterior (Desafio 6)
+	config();	//Configurações
+	/*Declaração e inicialização de variaveis*/
+	__code unsigned char digitsOnP2[] = {0xC0/*0*/, 0xF9/*1*/, 0xA4/*2*/, 0xB0/*3*/, 0x99/*4*/, 0x92/*5*/, 0x82/*6*/, 
+	0xF8/*7*/, 0x80/*8*/, 0x98/*9*/, 0x88/*A*/, 0x83/*b*/, 0xC6/*C*/, 0xA1/*d*/, 0x86/*E*/, 0x8E/*F*/};
+	unsigned char state = DISPLAY, result;
+	signed char index = 0;
+	/*Fim da declaraÃ§Ã£o das variavies*/
+	
+	while(1){
+		switch(state){
+			case DISPLAY:
+				letter = recebeUART();
+				P2 = digitsOnP2[index & 0x0F];
+				if(receptionEnded == 1)
+					result = stringValidation();
+				if(P0_6 == 0){
+					while(P0_6 == 0);
+					state = INC;
+				}
+				if(P0_7 == 0){
+					while(P0_7 == 0);
+					state = DEC;
+				}
+				if(result == INC)
+					state = INC;
+				else if(result == DEC)
+					state = DEC;
+				else
+					errorMessage();
+			break;
+			case INC:
+				index++;
+				if(index > 15)/*Utilizou se o if e não a mascara por causa do envio do valor de indice*/
+					index = 0;
+				valueMessage();
+				digitConfiguration(index);
+				state = DISPLAY;
+			break;
+			case DEC:
+				index--;
+				if(index < 0)/*Utilizou se o if e não a mascara por causa do envio do valor de indice*/
+					index = 15;
+				valueMessage();
+				digitConfiguration(index);
+				state = DISPLAY;
+			break;
+		}/*Fim do switch case*/
+	}/*Fim do ciclo infinito*/
 }
