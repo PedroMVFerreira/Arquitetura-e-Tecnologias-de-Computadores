@@ -3,12 +3,17 @@
 //Header files
 #include <c8051f380.h>
 #include "globalVariables.h"
+#include "auxiliar.h"
 
 void idle (void)
 {
+	//Declaração e inicialização de variaveis locais
+	unsigned char numberOFdigits = 0;
 	if(contFlagT2 == 40)
 		contFlagT2 = 0;
-	//Dividir segs por digito e mostrar esse valor no display 
+
+	numberOFdigits = digitsDivider(segs);//Divisão de 'segs' numero nos seus diferentes digitos
+	showOnDisplay(numberOFdigits);//Display desses diferentes digitos 
 }
 
 void cont (void)
@@ -17,12 +22,15 @@ void cont (void)
 		contFlag = 0;
 		segs++;
 	}
-	//Dividir segs por digito e mostrar o seu valor no display
+	
+	numberOFdigits = digitsDivider(segs);//Divisão de 'segs' nos seus diferentes digitos
+	showOnDisplay(numberOFdigits);//Display desses diferentes digitos 
 }
 
 void split (void)
 {
-	//Declaração e inicialização de variaveis
+	//Declaração e inicialização de variaveis locais
+	unsigned char numberOFdigits = 0;
 	unsigned char contSplits = 0;
 	unsigned int backsegs = segs;
 	
@@ -31,8 +39,9 @@ void split (void)
 	else 
 		passSplit = splitValue;
 	trueSplit = backsegs - passSplit;
-	//Dividir 'trueSplit' e enviar o seu valor junto com mensagem de contador por comunicação UART
-		
+	
+	numberOFdigits = digitsDivider(trueSplit);//Divisão do valor de 'trueSplit' nos seus diferentes digitos
+	//Enviar valor junto com mensagem de contador por comunicação UART		
 }
 
 void reset (void)
