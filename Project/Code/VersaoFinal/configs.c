@@ -32,7 +32,7 @@ void timer2Configs (void)
 	int reload = -50000; //Faltam 50000 ciclos para o transbordo
 	CLKSEL |= 0x02;
 	TMR2RLL = reload;	//Valor de reload -> byte menos significativo
-	TMR2RLH = SHIFTRIGTH(reload, 8); //Valor de reload -> byte mais significativo, os 8 bits mais significativos ocuparam a posição dos bit menos significativos  
+	TMR2RLH = reload >> 8; //Valor de reload -> byte mais significativo, os 8 bits mais significativos ocuparam a posição dos bit menos significativos  
 	
 }
 

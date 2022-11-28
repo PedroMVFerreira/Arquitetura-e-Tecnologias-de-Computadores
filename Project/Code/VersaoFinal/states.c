@@ -18,8 +18,11 @@ void idle (void)
 
 void cont (void)
 {
+	//Declaração de variaveis locais
+	unsigned char numberOFdigits = 0;
+	
 	if(contFlagT2 == 40){
-		contFlag = 0;
+		contFlagT2 = 0;
 		segs++;
 	}
 	
@@ -38,9 +41,9 @@ void split (void)
 		passSplit = 0;
 	else 
 		passSplit = splitValue;
-	trueSplit = backsegs - passSplit;
+	splitValue = backsegs - passSplit;
 	
-	numberOFdigits = digitsDivider(trueSplit);//Divisão do valor de 'trueSplit' nos seus diferentes digitos
+	numberOFdigits = digitsDivider(splitValue);//Divisão do valor de 'trueSplit' nos seus diferentes digitos
 	//Enviar valor junto com mensagem de contador por comunicação UART		
 }
 

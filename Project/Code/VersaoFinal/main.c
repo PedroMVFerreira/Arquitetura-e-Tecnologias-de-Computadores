@@ -5,7 +5,7 @@
 #include "macros.h"
 #include "configs.h"
 #include "states.h"
-#include "aux.h"
+#include "auxiliar.h"
 #include "globalVariables.h"
 #include "timer2.h"
 
