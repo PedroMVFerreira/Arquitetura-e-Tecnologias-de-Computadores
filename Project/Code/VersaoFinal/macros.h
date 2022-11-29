@@ -10,6 +10,7 @@
 
 //Tempo maximo de contagem
 #define MAXTIME 43200 //12 horas = 720 minutos = 43200 segundos
+#define ARRAYSIZE 0x0F
 
 /*Mascaras para manipulação de bits 
 SFR stands for special function register e p stands for position*/
@@ -19,3 +20,5 @@ SFR stands for special function register e p stands for position*/
 #define IS_SET(SFR, p) (SFR & 1 << p)
 #define SHIFTLEFT(SFR, p) (SFR << p)
 #define SHIFTRIGTH(SFR, p) (SFR >> p)
+#define FULL(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head > tail)
+#define EMPTY(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head == tail)

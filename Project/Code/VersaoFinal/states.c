@@ -44,7 +44,8 @@ void split (void)
 	splitValue = backsegs - passSplit;
 	
 	numberOFdigits = digitsDivider(splitValue);//Divisão do valor de 'trueSplit' nos seus diferentes digitos
-	//Enviar valor junto com mensagem de contador por comunicação UART		
+	
+	splitMessage(numberOFdigits); //Enviar o valor de split por comunicação UART
 }
 
 void reset (void)

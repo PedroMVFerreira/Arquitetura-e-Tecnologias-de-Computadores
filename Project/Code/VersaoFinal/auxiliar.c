@@ -1,6 +1,7 @@
 //Header files
 #include <c8051f380.h>
 #include "macros.h"
+#include "uart1.h"
 
 //Variaveis globais declaração
 unsigned int passSplit;
@@ -8,6 +9,9 @@ unsigned int splitValue;
 unsigned int segs;
 unsigned char contFlagT2;
 unsigned char digitsARRAY[5];
+unsigned char arrayDeEnvio[16];
+unsigned int head;
+unsigned int tail;
 
 void globalInits (void)
 {
@@ -21,6 +25,8 @@ void globalInits (void)
 	splitValue = 0;
 	for(index = 0; index != 5; index++)
 		digitsARRAY[index] = 0;
+	head = 0;
+	tail = 0;
 	
 }
 
@@ -123,4 +129,40 @@ void showOnDisplay (unsigned char nOn)//nOn stans for number of Numbers (neste c
 			P2 = 0xFF;
 		break;
 	}
+}
+
+void endCountMessage (void)
+{
+	enviaUART('F');
+	enviaUART('I');
+	enviaUART('M');
+	enviaUART(' ');
+	enviaUART('D');
+	enviaUART('E');
+	enviaUART(' ');
+	enviaUART('C');
+	enviaUART('O');
+	enviaUART('N');
+	enviaUART('T');
+	enviaUART('A');
+	enviaUART('G');
+	enviaUART('E');
+	enviaUART('M');
+	enviaUART('\r');
+	enviaUART('\t');
+}
+
+void splitMessage (unsigned char nOn)
+{
+	enviaUART('S');
+	enviaUART('P');
+	enviaUART('L');
+	enviaUART('I');
+	enviaUART('T');
+	enviaUART(' ');
+	enviaUART('N');
+	enviaUART('º');
+	enviaUART(' ');
+	for(unsigned char i = 0; i != nOn; i++)
+		enviaUART(digitsARRAY[i] + 48);
 }

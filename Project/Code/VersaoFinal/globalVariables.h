@@ -3,3 +3,7 @@ extern unsigned int passSplit;
 extern unsigned int splitValue;
 extern unsigned int segs;
 extern unsigned char contFlagT2;
+extern unsigned char digitsARRAY[5];
+extern unsigned char arrayDeEnvio[16];
+extern unsigned int head;
+extern unsigned int tail;
