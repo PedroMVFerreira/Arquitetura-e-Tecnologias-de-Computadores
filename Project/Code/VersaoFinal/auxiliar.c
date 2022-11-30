@@ -149,7 +149,7 @@ void endCountMessage (void)
 	enviaUART('E');
 	enviaUART('M');
 	enviaUART('\r');
-	enviaUART('\t');
+	enviaUART('\n');
 }
 
 void splitMessage (unsigned char nOn)
@@ -165,4 +165,6 @@ void splitMessage (unsigned char nOn)
 	enviaUART(' ');
 	for(unsigned char i = 0; i != nOn; i++)
 		enviaUART(digitsARRAY[i] + 48);
+	enviaUART('\r');
+	enviaUART('\n');
 }
