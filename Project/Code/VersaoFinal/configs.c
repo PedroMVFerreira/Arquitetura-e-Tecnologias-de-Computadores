@@ -42,6 +42,13 @@ void flagsUART_configs (void)
 	SET(SCON1, 1);		//TI1 = 1 -> transmite 
 }
 
+void oscilatorInit (void)
+{
+	//Oscilator configuration - using 48 MHZ (Internal H-F Oscilator / 1) 
+	FLSCL = 0x90;
+	CLKSEL = 0x03;
+}
+
 void configs (void)
 {
 	PCA0MD = 0x00; //Desativa o watchdog

@@ -4,3 +4,4 @@ void UART1_configs (void);
 void interruptsConfig (void);
 void portPinsConfigs (void);
 void flagsUART_configs (void);
+void oscilatorInit (void);

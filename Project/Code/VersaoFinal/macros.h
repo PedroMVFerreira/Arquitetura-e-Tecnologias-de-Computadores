@@ -10,7 +10,9 @@
 
 //Tempo maximo de contagem
 #define MAXTIME 43200 //12 horas = 720 minutos = 43200 segundos
-#define ARRAYSIZE 0x0F
+
+#define ARRAYSIZE 0x0F //Tamanho do array em hexa para usar em mascaras 
+
 
 /*Mascaras para manipulação de bits 
 SFR stands for special function register e p stands for position*/
@@ -18,7 +20,6 @@ SFR stands for special function register e p stands for position*/
 #define CLEAR(SFR, p) (SFR &= ~(1 << p))
 #define TOOGLE(SFR, p) (SFR ^= 1 << p)
 #define IS_SET(SFR, p) (SFR & 1 << p)
-#define SHIFTLEFT(SFR, p) (SFR << p)
-#define SHIFTRIGTH(SFR, p) (SFR >> p)
+#define IS_CLEAR(SFR, p) (SFR & !(1 << p))
 #define FULL(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head > tail)
 #define EMPTY(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head == tail)
