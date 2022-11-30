@@ -53,6 +53,7 @@ void configs (void)
 {
 	PCA0MD = 0x00; //Desativa o watchdog
 	portPinsConfigs();
+	oscilatorInit();
 	UART1_configs();
 	flagsUART_configs();
 	timer2Configs();
