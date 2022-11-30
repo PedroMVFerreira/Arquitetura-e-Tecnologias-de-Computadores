@@ -5,9 +5,9 @@
 
 void isr_UART1 (void) __interrupt (16)
 {
-	if(IS_SET(SCON1, TI1){//Flag de envio ativada
+	if(IS_SET(SCON1, TI1)){//Flag de envio ativada
 		CLEAR(SCON1, TI1);
-		if(!EMPTY(head, tail){
+		if(!(EMPTY(head, tail))){
 			SBUF1 = arrayDeEnvio[tail & ARRAYSIZE];
 			tail++;
 		}
