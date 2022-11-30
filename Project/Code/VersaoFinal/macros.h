@@ -13,6 +13,9 @@
 
 #define ARRAYSIZE 0x0F //Tamanho do array em hexa para usar em mascaras 
 
+//Permite-nos ter um codigo de mais facil leitura, quando formos manipular os bits do registo SCON1 
+#define RI1 0
+#define TI1 1
 
 /*Mascaras para manipulação de bits 
 SFR stands for special function register e p stands for position*/
