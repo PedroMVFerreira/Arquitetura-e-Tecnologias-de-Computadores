@@ -24,6 +24,7 @@ unsigned char receptionEnded = 0;
 #define CLEAR(SFR, p) (SFR &= ~(1 << p))
 #define TOOGLE(SFR, p) (SFR ^= 1 << p)
 #define IS_SET(SFR, p) (SFR & 1 << p)
+#define IS_CLEAR(SFR, p) (SFR & !(1 << p))
 
 //Estados da maquina de estados
 #define DISPLAY 0
@@ -42,8 +43,12 @@ void config()
 	XBR2 |= 0x01;		//Ativa a UART1 nos pinos do porto (TX1 em P0_0 e RX1 em P0_1)
 	P0SKIP |= 0x0F;	//Re-route de TX1 e RX1 para os pinos P0_4 e P0_5 respetivamente
 	
+	//Oscilator configuration - using 48 MHZ (Internal H-F Oscilator / 1) 
+	FLSCL = 0x90;
+	CLKSEL = 0x03;
+	
 	//Baud rate generator (A UART1 utiliza um timer dedicado) 115200bps
-	SBRLL1 |= 0xF9;	//Byte menos significativo do valor de reload
+	SBRLL1 |= 0x30;	//Byte menos significativo do valor de reload
 	SBRLH1 |= 0xFF;	//BYte mais significativo do valor de reload
 	SCON1 |= 0x10;		//Ativa a receção da UART1
 	SBCON1 |= 0x43;	//Byte menos significativo -> baud rate presecaler select definido para SYSCLK / 1 ||Byte mais significativo -> ativa o baud rate generator
