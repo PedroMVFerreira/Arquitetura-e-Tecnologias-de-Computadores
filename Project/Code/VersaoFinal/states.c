@@ -46,6 +46,8 @@ void split (void)
 	numberOFdigits = digitsDivider(splitValue);//Divisão do valor de 'trueSplit' nos seus diferentes digitos
 	
 	splitMessage(numberOFdigits); //Enviar o valor de split por comunicação UART
+	
+	contSplits++; //Incremento do numero de splits
 }
 
 void reset (void)

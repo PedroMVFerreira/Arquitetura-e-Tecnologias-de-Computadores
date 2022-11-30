@@ -1,3 +1,6 @@
+#ifndef MACROS_H
+#define MACROS_H
+
 //Definição das macros utilizadas ao longo de todo o programa
 
 //Estados que serão usados na implementação da maquina de estados
@@ -26,3 +29,5 @@ SFR stands for special function register e p stands for position*/
 #define IS_CLEAR(SFR, p) (SFR & !(1 << p))
 #define FULL(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head > tail)
 #define EMPTY(head, tail) ((head & ARRAYSIZE) == (tail & ARRAYSIZE) && head == tail)
+
+#endif
